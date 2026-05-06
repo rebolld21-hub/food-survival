@@ -252,42 +252,94 @@ function selectMode(mode) {
 function renderGenreElimination() {
     const main = document.getElementById('app-main');
     const displayGenres = currentMode === 'game' ? shuffleArray([...genreOptions]) : genreOptions;
+    
+    let titleText = "絶対に【食べたくない】ジャンルを消してね！🚫";
+    let subText = "（複数消してもOK、消さなくてもOK）";
+    let btnDisabled = "";
+
+    if (currentMode === 'game') {
+        titleText = "5枚以上のジャンルを選択して🃏";
+        subText = "（6枚以上消してもOK、消さなくてもOK）";
+        if (eliminatedGenres.length < 5) btnDisabled = "disabled";
+    }
+
     main.innerHTML = `
         <div class="screen active">
-            <h1 class="question-title" style="margin-bottom:10px;">絶対に【食べたくない】ジャンルを消してね！🚫</h1>
-            <p style="text-align:center; font-size:12px; color:#ff5232; margin-bottom:15px;">（複数消してもOK、消さなくてもOK）</p>
+            <h1 class="question-title" style="margin-bottom:10px;">${titleText}</h1>
+            <p style="text-align:center; font-size:12px; color:#ff5232; margin-bottom:15px;">${subText}</p>
             <div class="options-grid">
                 ${displayGenres.map((opt, i) => `
-                    <button class="option-btn ${currentMode === 'game' ? 'card-back' : ''}" id="genre-${i}" onclick="toggleEliminate('genre', '${opt.label}', 'genre-${i}')">
+                    <button class="option-btn ${currentMode === 'game' ? 'card-back' : ''} ${eliminatedGenres.includes(opt.label) ? 'eliminated' : ''}" id="genre-${i}" onclick="toggleEliminate('genre', '${opt.label}', 'genre-${i}')">
                         <span style="font-size: 24px; display:block; margin-bottom:4px;">${opt.emoji}</span>
                         <span>${opt.label}</span>
                     </button>
                 `).join('')}
             </div>
-            <button class="nav-btn" onclick="renderTypeElimination()">次へ 👉</button>
+            <button id="next-btn-genre" class="nav-btn" onclick="renderTypeElimination()" ${btnDisabled}>次へ 👉</button>
         </div>
     `;
+    updateGenreBtn();
+}
+
+function updateGenreBtn() {
+    if (currentMode !== 'game') return;
+    const nextBtn = document.getElementById('next-btn-genre');
+    if (nextBtn) {
+        if (eliminatedGenres.length >= 5) {
+            nextBtn.disabled = false;
+            nextBtn.innerText = "次へ 👉";
+        } else {
+            nextBtn.disabled = true;
+            nextBtn.innerText = `あと ${5 - eliminatedGenres.length} 枚選択`;
+        }
+    }
 }
 
 // 【第3画面】種類除外（17種類）
 function renderTypeElimination() {
     const main = document.getElementById('app-main');
     const displayTypes = currentMode === 'game' ? shuffleArray([...typeOptions]) : typeOptions;
+    
+    let titleText = "絶対に【避けたい】種類を消してね！👎";
+    let subText = "（複数消してもOK、消さなくてもOK）";
+    let btnDisabled = "";
+
+    if (currentMode === 'game') {
+        titleText = "5枚以上の種類を選択して🃏";
+        subText = "（6枚以上消してもOK、消さなくてもOK）";
+        if (eliminatedTypes.length < 5) btnDisabled = "disabled";
+    }
+
     main.innerHTML = `
         <div class="screen active">
-            <h1 class="question-title" style="margin-bottom:10px;">絶対に【避けたい】種類を消してね！👎</h1>
-            <p style="text-align:center; font-size:12px; color:#ff5232; margin-bottom:15px;">（複数消してもOK、消さなくてもOK）</p>
+            <h1 class="question-title" style="margin-bottom:10px;">${titleText}</h1>
+            <p style="text-align:center; font-size:12px; color:#ff5232; margin-bottom:15px;">${subText}</p>
             <div class="options-grid">
                 ${displayTypes.map((opt, i) => `
-                    <button class="option-btn ${currentMode === 'game' ? 'card-back' : ''}" id="type-${i}" onclick="toggleEliminate('type', '${opt.label}', 'type-${i}')">
+                    <button class="option-btn ${currentMode === 'game' ? 'card-back' : ''} ${eliminatedTypes.includes(opt.label) ? 'eliminated' : ''}" id="type-${i}" onclick="toggleEliminate('type', '${opt.label}', 'type-${i}')">
                         <span style="font-size: 24px; display:block; margin-bottom:4px;">${opt.emoji}</span>
                         <span>${opt.label}</span>
                     </button>
                 `).join('')}
             </div>
-            <button class="nav-btn" onclick="startSurvival()">候補を絞り込む！ 🔪</button>
+            <button id="next-btn-type" class="nav-btn" onclick="startSurvival()" ${btnDisabled}>候補を絞り込む！ 🔪</button>
         </div>
     `;
+    updateTypeBtn();
+}
+
+function updateTypeBtn() {
+    if (currentMode !== 'game') return;
+    const nextBtn = document.getElementById('next-btn-type');
+    if (nextBtn) {
+        if (eliminatedTypes.length >= 5) {
+            nextBtn.disabled = false;
+            nextBtn.innerText = "候補を絞り込む！ 🔪";
+        } else {
+            nextBtn.disabled = true;
+            nextBtn.innerText = `あと ${5 - eliminatedTypes.length} 枚選択`;
+        }
+    }
 }
 
 function toggleEliminate(category, label, btnId) {
@@ -300,6 +352,12 @@ function toggleEliminate(category, label, btnId) {
     } else {
         targetArray.push(label);
         btn.classList.add('eliminated');
+    }
+
+    if (category === 'genre') {
+        updateGenreBtn();
+    } else {
+        updateTypeBtn();
     }
 }
 
@@ -327,19 +385,31 @@ function startSurvival() {
 
 function renderSurvivalPhase() {
     const main = document.getElementById('app-main');
+    
+    let titleText = `${currentCandidates.length}個の候補が生き残った！<br><span style='font-size:16px; color:var(--primary-color);'>「これは違うな」というものをタップして吹き飛ばしてね💥</span>`;
+    let btnDisabled = "";
+
+    let requiredPicks = Math.min(5, Math.max(1, currentCandidates.length - 1));
+
+    if (currentMode === 'game') {
+        titleText = `${currentCandidates.length}個の候補が生き残った！<br><span style='font-size:16px; color:var(--primary-color);'>${requiredPicks}枚のカードを選択してね🃏</span>`;
+        if (intermediateEliminatedNames.length < requiredPicks) btnDisabled = "disabled";
+    }
+
     main.innerHTML = `
         <div class="screen active">
-            <h1 class="question-title">10個の候補が生き残った！<br><span style="font-size:16px; color:var(--primary-color);">「これは違うな」というものをタップして吹き飛ばしてね💥</span></h1>
+            <h1 class="question-title" style="line-height: 1.5;">${titleText}</h1>
             <div class="options-grid">
                 ${currentCandidates.map((food, i) => `
-                    <button id="card-${i}" class="option-btn ${currentMode === 'game' ? 'card-back' : ''}" onclick="toggleEliminateSurvival(${i})">
+                    <button id="card-${i}" class="option-btn ${currentMode === 'game' ? 'card-back' : ''} ${intermediateEliminatedNames.includes(food.name) ? 'eliminated' : ''}" onclick="toggleEliminateSurvival(${i})">
                         <span>${food.name}</span>
                     </button>
                 `).join('')}
             </div>
-            <button id="result-btn" class="nav-btn" onclick="showResult()">最終結果を見る！ 🏆</button>
+            <button id="result-btn" class="nav-btn" onclick="showResult()" ${btnDisabled}>最終結果を見る！ 🏆</button>
         </div>
     `;
+    updateSurvivalBtn();
 }
 
 function toggleEliminateSurvival(index) {
@@ -354,10 +424,21 @@ function toggleEliminateSurvival(index) {
         btn.classList.add('eliminated');
     }
 
+    updateSurvivalBtn();
+}
+
+function updateSurvivalBtn() {
     const resultBtn = document.getElementById('result-btn');
-    if (intermediateEliminatedNames.length === 10) {
+    if (!resultBtn) return;
+
+    let requiredPicks = Math.min(5, Math.max(1, currentCandidates.length - 1));
+
+    if (intermediateEliminatedNames.length === currentCandidates.length) {
         resultBtn.disabled = true;
         resultBtn.innerText = '全部消えちゃった！😱';
+    } else if (currentMode === 'game' && intermediateEliminatedNames.length < requiredPicks) {
+        resultBtn.disabled = true;
+        resultBtn.innerText = `あと ${requiredPicks - intermediateEliminatedNames.length} 枚選択`;
     } else {
         resultBtn.disabled = false;
         resultBtn.innerText = '最終決定！ 🏆';
