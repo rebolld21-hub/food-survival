@@ -7,6 +7,13 @@
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="manifest" href="manifest.json">
+  
+  <!-- iOS用の詳細設定 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FoodSurvivor">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -16,6 +23,18 @@
   </script>
 </head>
 <body>
+  <!-- ホーム画面追加を促すポップアップ -->
+  <div id="pwa-install-prompt" class="pwa-prompt hidden">
+    <div class="pwa-prompt-content">
+      <span class="pwa-close" onclick="closePrompt()">×</span>
+      <p><strong>ホーム画面に追加してアプリとして使いませんか？</strong></p>
+      <div class="pwa-steps">
+        <p>1. 下の共有ボタン <img src="https://developer.apple.com/design/human-interface-guidelines/foundations/images/icons/sharing/sharing_share_light.png" width="20" style="vertical-align: middle;"> を押す</p>
+        <p>2. 「ホーム画面に追加」を選択</p>
+      </div>
+    </div>
+  </div>
+
   <div class="background-pattern"></div>
   <div class="app-container">
     <header>
