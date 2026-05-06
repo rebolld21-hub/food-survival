@@ -251,12 +251,13 @@ function selectMode(mode) {
 // 【第2画面】ジャンル除外（13種類）
 function renderGenreElimination() {
     const main = document.getElementById('app-main');
+    const displayGenres = currentMode === 'game' ? shuffleArray([...genreOptions]) : genreOptions;
     main.innerHTML = `
         <div class="screen active">
             <h1 class="question-title" style="margin-bottom:10px;">絶対に【食べたくない】ジャンルを消してね！🚫</h1>
             <p style="text-align:center; font-size:12px; color:#ff5232; margin-bottom:15px;">（複数消してもOK、消さなくてもOK）</p>
             <div class="options-grid">
-                ${genreOptions.map((opt, i) => `
+                ${displayGenres.map((opt, i) => `
                     <button class="option-btn ${currentMode === 'game' ? 'card-back' : ''}" id="genre-${i}" onclick="toggleEliminate('genre', '${opt.label}', 'genre-${i}')">
                         <span style="font-size: 24px; display:block; margin-bottom:4px;">${opt.emoji}</span>
                         <span>${opt.label}</span>
@@ -271,12 +272,13 @@ function renderGenreElimination() {
 // 【第3画面】種類除外（17種類）
 function renderTypeElimination() {
     const main = document.getElementById('app-main');
+    const displayTypes = currentMode === 'game' ? shuffleArray([...typeOptions]) : typeOptions;
     main.innerHTML = `
         <div class="screen active">
             <h1 class="question-title" style="margin-bottom:10px;">絶対に【避けたい】種類を消してね！👎</h1>
             <p style="text-align:center; font-size:12px; color:#ff5232; margin-bottom:15px;">（複数消してもOK、消さなくてもOK）</p>
             <div class="options-grid">
-                ${typeOptions.map((opt, i) => `
+                ${displayTypes.map((opt, i) => `
                     <button class="option-btn ${currentMode === 'game' ? 'card-back' : ''}" id="type-${i}" onclick="toggleEliminate('type', '${opt.label}', 'type-${i}')">
                         <span style="font-size: 24px; display:block; margin-bottom:4px;">${opt.emoji}</span>
                         <span>${opt.label}</span>
