@@ -477,9 +477,9 @@ function showResult() {
                 <div class="dish-name" style="font-size: 20px;">${dish.name}</div>
                 ${variationsHtml}
                 <div class="search-buttons" style="display:flex; justify-content:center; gap:5px; flex-wrap:wrap;">
-                    <a href="https://tabelog.com/rstLst/?vs=1&sa=&sk=${query}" target="_blank" class="btn-search">🍽️ 食べログ</a>
-                    <a href="https://cookpad.com/search/${query}" target="_blank" class="btn-search" style="background:#ff9f1a; color:white; border-color:#e67e22; box-shadow:0 4px 0 #e67e22;">🍳 クックパッド</a>
-                    <a href="https://sp.demae-can.com/search/chain/${query}" target="_blank" class="btn-search">🛵 出前館</a>
+                    <a href="https://www.google.com/search?q=${query}+食べログ" target="_blank" rel="noopener noreferrer" class="btn-search">🍽️ 食べログ</a>
+                    <a href="https://cookpad.com/search/${query}" target="_blank" rel="noopener noreferrer" class="btn-search" style="background:#ff9f1a; color:white; border-color:#e67e22; box-shadow:0 4px 0 #e67e22;">🍳 クックパッド</a>
+                    <a href="https://www.google.com/search?q=${query}+出前館" target="_blank" rel="noopener noreferrer" class="btn-search">🛵 出前館</a>
                 </div>
             </div>
         `;
