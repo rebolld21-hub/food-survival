@@ -254,10 +254,9 @@ function generateIntermediateCandidates() {
     return true;
   });
 
-  if (validFoods.length < 10) {
-      const remaining = allFoods.filter(f => !validFoods.includes(f));
-      remaining.sort(() => 0.5 - Math.random());
-      validFoods = [...validFoods, ...remaining.slice(0, 10 - validFoods.length)];
+  if (validFoods.length === 0) {
+      // 万が一すべて除外されてしまった場合のみ、全リストからランダムに10個（保険）
+      validFoods = [...allFoods];
   }
 
   // 生き残った大量のリストから、ランダムに10個抽出する！！
@@ -361,7 +360,7 @@ function renderFinalScreen() {
           <div class="dish-name" style="margin-top:8px;">${dish.name}</div>
           ${variationsHtml}
           <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-top:8px;">
-            <a href="https://tabelog.com/rst/rstsearch/?sk=${query}" target="_blank" class="btn-search">🍽️ 食べログ</a>
+            <a href="https://www.google.com/search?q=食べログ+${query}" target="_blank" class="btn-search">🍽️ 食べログ検索</a>
             <a href="https://www.google.com/search?q=出前館+${query}" target="_blank" class="btn-search">🛵 出前館検索</a>
             <a href="https://cookpad.com/search/${query}" target="_blank" class="btn-search" style="background:#ff9f1a; border-color:#e67e22; box-shadow:0 4px 0 #e67e22;">🍳 クックパッド</a>
           </div>
