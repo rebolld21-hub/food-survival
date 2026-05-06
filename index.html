@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Survivor | 消去法で決める今日のご飯</title>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="background-pattern"></div>
+  <div class="app-container">
+    <header>
+      <h1>Food Survivor 🧨</h1>
+      <p>「食べたくない」を消して、最高の一皿を残そう！</p>
+    </header>
+
+    <main id="app-main">
+      <!-- JSによってここに画面が構築されます -->
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

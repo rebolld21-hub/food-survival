@@ -1,0 +1,21 @@
+{
+  "name": "Food Survivor",
+  "short_name": "FoodSurvivor",
+  "description": "消去法で決める今日のご飯",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff5232",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
